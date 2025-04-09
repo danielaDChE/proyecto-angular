@@ -1,0 +1,14 @@
+<div class="componente-asistente">
+    <h3>Formulario de asistencia de escuela sabatica (hijo)</h3>
+    <form (ngSubmit) = "registrarAsistencia()">
+        <div>
+            <label>Nombre:</label>
+            <input [(ngModel)]="asistente().nombre" type="text" name="nombre" />
+        </div>
+        <div>
+            <label>Edad:</label>
+            <input [(ngModel)]="asistente().edad" type="number" name="edad" />
+        </div>
+        <button type="submit">Registrar</button>
+    </form>
+</div>

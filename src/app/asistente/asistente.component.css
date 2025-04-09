@@ -1,0 +1,35 @@
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+div {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+input {
+    width: 90%;
+    padding: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 2px 8px 0.8px #ccc; 
+}
+
+button {
+    background-color: greenyellow;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.componente-asistente {
+    border-radius: 5px;
+    border: 2px dashed #ccc;
+    padding: 5px;
+}
