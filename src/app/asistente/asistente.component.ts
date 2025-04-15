@@ -12,9 +12,16 @@ import { AsistenteService } from '../servicios/asistente.service';
 export class AsistenteComponent {
   asistente = signal({
     nombre : '',
-    edad : null
+    edad : null,
+    ministerioId : null as number | null
   });
   asistentes = signal<any[]>([]);
+
+  nuevoMinisterio = signal({
+    nombre : '',
+    descripcion : ''
+  });
+  ministerios = signal<any[]>([]);
 
   constructor(private dbServicio : AsistenteService) {
     this.cargarAsistentes();
@@ -24,9 +31,9 @@ export class AsistenteComponent {
   registrarAsistencia() {
     const datos = this.asistente(); 
     if (datos.nombre && datos.edad !== null) {
-      this.dbServicio.guardarAsistente({nombre : datos.nombre, edad : datos.edad})
+      this.dbServicio.guardarAsistente({nombre : datos.nombre, edad : datos.edad, ministerioId : datos.ministerioId })
         .then(() => {
-            this.asistente.set({ nombre : '' , edad : null});
+            this.asistente.set({ nombre : '' , edad : null, ministerioId : null});
             this.cargarAsistentes();
             // console.log("registro correctamente ------");
         }).catch(() => console.log("error....."));
@@ -36,5 +43,21 @@ export class AsistenteComponent {
   cargarAsistentes() {
     this.dbServicio.obtenerAsistentes()
       .then((lista) => { this.asistentes.set(lista) });
+  }
+
+  agregarMinisterio() {
+    const datos = this.nuevoMinisterio();
+    if (datos.nombre) {
+      this.dbServicio.agregarMinisterio(datos).then(() => {
+        this.nuevoMinisterio.set({ nombre: '', descripcion: ''});
+        this.cargarMinisterios();
+        console.log("se agrego correctamente");
+      })
+    }
+  }
+
+  cargarMinisterios() {
+    this.dbServicio.obtenerMinisterios()
+      .then((lista) => { this.ministerios.set(lista) });
   }
 }

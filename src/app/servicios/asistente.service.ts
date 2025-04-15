@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class AsistenteService {
   private dbNombre = 'EscuelaSabaticaDB';
-  private objetoAsistente = 'asistentes';
+  private objetoAsistente = 'asistentes'; // tabla asistente
+  private objetoMinisterio = 'ministerio'; // tabla ministerios
   private db! : IDBDatabase;
   constructor() { 
     this.initDB();
@@ -23,6 +24,10 @@ export class AsistenteService {
         if(!this.db.objectStoreNames.contains(this.objetoAsistente)){
           this.db.createObjectStore(this.objetoAsistente, {keyPath: 'id', autoIncrement: true });
         }
+
+        if(!this.db.objectStoreNames.contains(this.objetoMinisterio)){
+          this.db.createObjectStore(this.objetoMinisterio, {keyPath: 'id', autoIncrement: true });
+        }
       
     }
 
@@ -31,7 +36,7 @@ export class AsistenteService {
     }      
   }
  
-  guardarAsistente( asistente : {nombre : string; edad: string}) : Promise<void>{
+  guardarAsistente( asistente : {nombre : string; edad: number | null; ministerioId : number | null}) : Promise<void>{
     return new Promise((satisfactorio, rechazo) => {
       const trs =  this.db.transaction([this.objetoAsistente], 'readwrite');
       const objetoAsistente = trs.objectStore(this.objetoAsistente);
@@ -47,6 +52,27 @@ export class AsistenteService {
       const trs =  this.db.transaction([this.objetoAsistente], 'readonly');
       const objetoAsistente = trs.objectStore(this.objetoAsistente);
       const request =  objetoAsistente.getAll();
+      request.onsuccess = () => satisfactorio(request.result);
+      request.onerror = () => console.log("existe un error");
+    });
+  }
+
+  agregarMinisterio( ministerio : {nombre : string; descripcion: string; }) : Promise<void>{
+    return new Promise((satisfactorio, rechazo) => {
+      const trs =  this.db.transaction([this.objetoMinisterio], 'readwrite');
+      const objetoMinisterio = trs.objectStore(this.objetoMinisterio);
+      objetoMinisterio.add(ministerio);
+      trs.oncomplete = () => satisfactorio();
+      trs.onerror = () => rechazo(trs.error);
+
+    });
+  }
+
+  obtenerMinisterios () : Promise<any[]>{
+    return new Promise((satisfactorio, rechazo) => {
+      const trs =  this.db.transaction([this.objetoMinisterio], 'readonly');
+      const objetoMinisterio= trs.objectStore(this.objetoMinisterio);
+      const request =  objetoMinisterio.getAll();
       request.onsuccess = () => satisfactorio(request.result);
       request.onerror = () => console.log("existe un error");
     });

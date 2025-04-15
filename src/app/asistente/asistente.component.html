@@ -9,12 +9,34 @@
             <label>Edad:</label>
             <input [(ngModel)]="asistente().edad" type="number" name="edad" />
         </div>
+        <div>
+            <label>Ministerio:</label>
+            <select [(ngModel)]="asistente().ministerioId" name="ministerio">
+                <option [value] = "null">Seleccione un ministerio</option>
+                <option *ngFor ="let m of  ministerios()" [value]="m.id">
+                    {{m.nombre}}
+                </option>
+            </select>
+        </div>
         <button type="submit">Registrar</button>
+    </form>
+    <!-- FORMULARIO MINISTERIO  -->
+    <h3>Formulario de ministerio</h3>
+    <form (ngSubmit) = "agregarMinisterio()">
+        <div>
+            <label>Nombre:</label>
+            <input [(ngModel)]="nuevoMinisterio().nombre" type="text" name="nombre" />
+        </div>
+        <div>
+            <label>Descripcion:</label>
+            <input [(ngModel)]="nuevoMinisterio().descripcion" type="text" name="descripcion" />
+        </div>
+        <button type="submit">Registrar Ministerio</button>
     </form>
     <h4>Lista de asistentes</h4>
     <ul>
         <li *ngFor="let item of asistentes()"> 
-            {{item.nombre}} - {{item.edad}} anios
+            {{item.nombre}} - {{item.edad}} anios - {{item.ministerioId}}
         </li>
     </ul>
 </div>
