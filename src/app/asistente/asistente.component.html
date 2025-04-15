@@ -11,4 +11,10 @@
         </div>
         <button type="submit">Registrar</button>
     </form>
+    <h4>Lista de asistentes</h4>
+    <ul>
+        <li *ngFor="let item of asistentes()"> 
+            {{item.nombre}} - {{item.edad}} anios
+        </li>
+    </ul>
 </div>
