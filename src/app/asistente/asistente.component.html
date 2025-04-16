@@ -1,24 +1,31 @@
-<div class="componente-asistente">
+<div class="componente-asistente" >
     <h3>Formulario de asistencia de escuela sabatica (hijo)</h3>
-    <form (ngSubmit) = "registrarAsistencia()">
-        <div>
-            <label>Nombre:</label>
-            <input [(ngModel)]="asistente().nombre" type="text" name="nombre" />
+    <form class="col-4" (ngSubmit) = "registrarAsistencia()">
+        <!-- <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Small</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+          </div> -->
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
+            <input [(ngModel)]="asistente().nombre" type="text" class="form-control" name="nombre" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            <!-- <label>Nombre:</label>
+            <input [(ngModel)]="asistente().nombre" type="text" name="nombre" /> -->
         </div>
-        <div>
-            <label>Edad:</label>
-            <input [(ngModel)]="asistente().edad" type="number" name="edad" />
+        <div class="input-group input-group-sm mb-3">
+            <!-- <label>Edad:</label> -->
+            <span class="input-group-text" id="inputGroup-sizing-sm">Edad:</span>
+            <input [(ngModel)]="asistente().edad" type="number" name="edad" class="form-control" />
         </div>
         <div>
             <label>Ministerio:</label>
-            <select [(ngModel)]="asistente().ministerioId" name="ministerio">
+            <select class="form-select"  [(ngModel)]="asistente().ministerioId" name="ministerio">
                 <option [value] = "null">Seleccione un ministerio</option>
                 <option *ngFor ="let m of  ministerios()" [value]="m.id">
                     {{m.nombre}}
                 </option>
             </select>
         </div>
-        <button type="submit">Registrar</button>
+        <button class="btn btn-success" type="submit">Registrar</button>
     </form>
     <!-- FORMULARIO MINISTERIO  -->
     <h3>Formulario de ministerio</h3>
@@ -31,7 +38,7 @@
             <label>Descripcion:</label>
             <input [(ngModel)]="nuevoMinisterio().descripcion" type="text" name="descripcion" />
         </div>
-        <button type="submit">Registrar Ministerio</button>
+        <button  class="btn btn-primary" type="submit">Registrar Ministerio</button>
     </form>
     <h4>Lista de asistentes</h4>
     <ul>
