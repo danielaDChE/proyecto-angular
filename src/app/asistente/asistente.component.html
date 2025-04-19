@@ -1,49 +1,204 @@
-<div class="componente-asistente" >
-    <h3>Formulario de asistencia de escuela sabatica (hijo)</h3>
-    <form class="col-4" (ngSubmit) = "registrarAsistencia()">
-        <!-- <div class="input-group input-group-sm mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-sm">Small</span>
-            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-          </div> -->
-        <div class="input-group input-group-sm mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-sm">Nombre:</span>
-            <input [(ngModel)]="asistente().nombre" type="text" class="form-control" name="nombre" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            <!-- <label>Nombre:</label>
-            <input [(ngModel)]="asistente().nombre" type="text" name="nombre" /> -->
+<div class="container mt-5">
+    <div class="hero">
+        <div class="hero-services d-flex align-items-center justify-content-between mt-4">
+            <!-- Texto a la izquierda -->
+            <div class="hero-text text-start me-4">
+              <h1>Sistema de Pago<br>de Terrenos</h1>
+              <p class="lead">Optimiza tu gestión con nuestros servicios</p>
+            </div>
+          
+            <!-- Imagen con botones superpuestos -->
+            <div class="services-image-container position-relative">
+              <img 
+                src="https://d1acdg20u0pmxj.cloudfront.net/listings/599ec8ba-7feb-482e-b67f-a9567507abda/860x440/579f636b-7e07-4db4-8c2b-d3292454e814.jpg" 
+                class="img-fluid w-100 h-100 object-fit-cover rounded shadow" 
+                alt="Sistema de terrenos">
+          
+              <div class="service-buttons-overlay position-absolute top-50 end-0 translate-middle-y me-3">
+                <button class="service-btn branding mb-3" (click)="cambiarTab('usuarios')">
+                  <i class="bi bi-people-fill me-2"></i>Clientes
+                </button>
+                <button class="service-btn soft mb-3" (click)="cambiarTab('terrenos')">
+                  <i class="bi bi-map-fill me-2"></i>Terrenos
+                </button>
+                <button class="service-btn research" (click)="cambiarTab('deudas')">
+                  <i class="bi bi-cash-coin me-2"></i>Deudas
+                </button>
+              </div>
+            </div>
+          </div>
+          
+    <section class="logos">
+        <button>Confianza</button>
+        <button>Familia</button>
+        <button>Sueños</button>
+        <button>Metas</button>
+        <button>Patrimonios</button>
+      </section>
+      <section class="info">
+        <p>Sistema de gestión de pagos de terrenos con seguimiento de deudas.</p>
+      </section>
+    <div class="graphic-container mt-5">
+      <div class="row">
+        <!-- Columna Usuarios -->
+        <div class="col-md-4">
+          <div class="circle-column">
+            <h3 class="text-center mb-4">Clientes</h3>
+            
+            <div *ngIf="activeTab === 'usuarios'" class="mb-4">
+              <div class="mb-3">
+                <input [(ngModel)]="nuevoUsuario.nombre" placeholder="Nombre" class="form-control">
+                <input [(ngModel)]="nuevoUsuario.telefono" placeholder="Teléfono" class="form-control mt-2">
+                <input [(ngModel)]="nuevoUsuario.direccion" placeholder="Dirección" class="form-control mt-2">
+                <button (click)="agregarUsuario()" class="btn btn-success mt-2 w-100">Agregar</button>
+              </div>
+            </div>
+            
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let usuario of usuarios">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>{{usuario.nombre}}</strong><br>
+                    <small class="text-muted">{{usuario.telefono}}</small>
+                  </div>
+                  <div>
+                    <button (click)="editar(usuario, 'usuario')" class="btn btn-sm btn-primary me-1">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button (click)="eliminarUsuario(usuario.id)" class="btn btn-sm btn-danger">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div *ngIf="editando.id === usuario.id && editando.tipo === 'usuario'" class="mt-3">
+                  <input [(ngModel)]="editando.nombre" class="form-control">
+                  <input [(ngModel)]="editando.telefono" class="form-control mt-2">
+                  <input [(ngModel)]="editando.direccion" class="form-control mt-2">
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+                    <button (click)="guardarEdicion()" class="btn btn-sm btn-success me-md-2">Guardar</button>
+                    <button (click)="cancelarEdicion()" class="btn btn-sm btn-secondary">Cancelar</button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="input-group input-group-sm mb-3">
-            <!-- <label>Edad:</label> -->
-            <span class="input-group-text" id="inputGroup-sizing-sm">Edad:</span>
-            <input [(ngModel)]="asistente().edad" type="number" name="edad" class="form-control" />
+  
+        <!-- Columna Terrenos -->
+        <div class="col-md-4">
+          <div class="oval-column">
+            <h3 class="text-center mb-4">Terrenos</h3>
+            
+            <div *ngIf="activeTab === 'terrenos'" class="mb-4">
+              <div class="mb-3">
+                <select [(ngModel)]="nuevoTerreno.usuarioId" class="form-select">
+                  <option value="">Seleccione un cliente</option>
+                  <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{usuario.nombre}}</option>
+                </select>
+                <input [(ngModel)]="nuevoTerreno.direccion" placeholder="Dirección" class="form-control mt-2">
+                <input [(ngModel)]="nuevoTerreno.area" placeholder="Área (m²)" class="form-control mt-2">
+                <input [(ngModel)]="nuevoTerreno.precio" placeholder="Precio" class="form-control mt-2">
+                <button (click)="agregarTerreno()" class="btn btn-success mt-2 w-100">Agregar</button>
+              </div>
+            </div>
+            
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let terreno of terrenos">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>{{asistenteService.getUsuarioNombre(terreno.usuarioId)}}</strong><br>
+                    <small class="text-muted">{{terreno.direccion}} ({{terreno.area}}m² - ${{terreno.precio}})</small>
+                  </div>
+                  <div>
+                    <button (click)="editar(terreno, 'terreno')" class="btn btn-sm btn-primary me-1">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button (click)="eliminarTerreno(terreno.id)" class="btn btn-sm btn-danger">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div *ngIf="editando.id === terreno.id && editando.tipo === 'terreno'" class="mt-3">
+                  <select [(ngModel)]="editando.usuarioId" class="form-select">
+                    <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{usuario.nombre}}</option>
+                  </select>
+                  <input [(ngModel)]="editando.direccion" class="form-control mt-2">
+                  <input [(ngModel)]="editando.area" class="form-control mt-2">
+                  <input [(ngModel)]="editando.precio" class="form-control mt-2">
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+                    <button (click)="guardarEdicion()" class="btn btn-sm btn-success me-md-2">Guardar</button>
+                    <button (click)="cancelarEdicion()" class="btn btn-sm btn-secondary">Cancelar</button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div>
-            <label>Ministerio:</label>
-            <select class="form-select"  [(ngModel)]="asistente().ministerioId" name="ministerio">
-                <option [value] = "null">Seleccione un ministerio</option>
-                <option *ngFor ="let m of  ministerios()" [value]="m.id">
-                    {{m.nombre}}
-                </option>
-            </select>
+  
+        <!-- Columna Deudas -->
+        <div class="col-md-4">
+          <div class="rectangle-column">
+            <h3 class="text-center mb-4">Deudas</h3>
+            
+            <div *ngIf="activeTab === 'deudas'" class="mb-4">
+              <div class="mb-3">
+                <select [(ngModel)]="nuevaDeuda.terrenoId" class="form-select">
+                  <option value="">Seleccione un terreno</option>
+                  <option *ngFor="let terreno of terrenos" [value]="terreno.id">
+                    {{getUsuarioNombre(terreno.usuarioId)}} - {{terreno.direccion}}
+                  </option>
+                </select>
+                <input [(ngModel)]="nuevaDeuda.monto" type="number" placeholder="Monto" class="form-control mt-2">
+                <input [(ngModel)]="nuevaDeuda.fechaVencimiento" type="date" class="form-control mt-2">
+                <select [(ngModel)]="nuevaDeuda.estado" class="form-select mt-2">
+                  <option value="Pendiente">Pendiente</option>
+                  <option value="Pagado">Pagado</option>
+                  <option value="Parcial">Pago Parcial</option>
+                </select>
+                <button (click)="agregarDeuda()" class="btn btn-success mt-2 w-100">Agregar</button>
+              </div>
+            </div>
+            
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let deuda of deudas">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>{{getDeudaDisplay(deuda)}}</strong>
+                  </div>
+                  <div>
+                    <button (click)="editar(deuda, 'deuda')" class="btn btn-sm btn-primary me-1">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button (click)="eliminarDeuda(deuda.id)" class="btn btn-sm btn-danger">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div *ngIf="editando.id === deuda.id && editando.tipo === 'deuda'" class="mt-3">
+                  <select [(ngModel)]="editando.terrenoId" class="form-select">
+                    <option *ngFor="let terreno of terrenos" [value]="terreno.id">
+                      {{getUsuarioNombre(terreno.usuarioId)}} - {{terreno.direccion}}
+                    </option>
+                  </select>
+                  <input [(ngModel)]="editando.monto" type="number" class="form-control mt-2">
+                  <input [(ngModel)]="editando.fechaVencimiento" type="date" class="form-control mt-2">
+                  <select [(ngModel)]="editando.estado" class="form-select mt-2">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Pagado">Pagado</option>
+                    <option value="Parcial">Pago Parcial</option>
+                  </select>
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+                    <button (click)="guardarEdicion()" class="btn btn-sm btn-success me-md-2">Guardar</button>
+                    <button (click)="cancelarEdicion()" class="btn btn-sm btn-secondary">Cancelar</button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-        <button class="btn btn-success" type="submit">Registrar</button>
-    </form>
-    <!-- FORMULARIO MINISTERIO  -->
-    <h3>Formulario de ministerio</h3>
-    <form (ngSubmit) = "agregarMinisterio()">
-        <div>
-            <label>Nombre:</label>
-            <input [(ngModel)]="nuevoMinisterio().nombre" type="text" name="nombre" />
-        </div>
-        <div>
-            <label>Descripcion:</label>
-            <input [(ngModel)]="nuevoMinisterio().descripcion" type="text" name="descripcion" />
-        </div>
-        <button  class="btn btn-primary" type="submit">Registrar Ministerio</button>
-    </form>
-    <h4>Lista de asistentes</h4>
-    <ul>
-        <li *ngFor="let item of asistentes()"> 
-            {{item.nombre}} - {{item.edad}} anios - {{item.ministerioId}}
-        </li>
-    </ul>
-</div>
+      </div>
+    </div>
+  </div>
